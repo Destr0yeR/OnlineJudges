@@ -35,68 +35,78 @@ int Find(int x){
 }
 
 bool areFriends(int x, int y){
-    return (Find(x) == Find(y));
+    if(x == -1 || y == -1)return false;
+    int aliadoX = Find(x);
+    int aliadoY = Find(y);
+
+    return (aliadoX == aliadoY);
 }
 
 bool areEnemies(int x, int y){
-    return (Find(x) != Find(y));
+
 }
 
-void Union(int x, int y){
-    aliado[Find(x)] = aliado[Find(y)];
-}
+bool setFriends(int x, int y){
+    if(areEnemies(x, y))return false;
+    if(areFriends(x, y))return true;
 
-void setFriends(int x, int y){
-    Union(x, y);
+    int aliadoX = Find(x);
+    int aliadoY = Find(y);
 
-    if(x == enemigo[x] && y == enemigo[y]){
+    int enemigoX = enemigo[aliadoX];
+    int enemigoY = enemigo[aliadoY];
 
-    }
-    else if(x == enemigo[x]){
-        enemigo[x] = enemigo[y];
-    }
-    else if(y == enemigo[y]){
-        enemigo[y] = enemigo[x];
-    }
-    else {
-        Union(enemigo[x],enemigo[y]);
-    }
-}
-
-void setEnemies(int x, int y){
-    if(x == enemigo[x] && y == enemigo[y]){
-        enemigo[x] = y;
-        enemigo[y] = x;
-    }
-    else if(enemigo[x] == x){
-        enemigo[x] = y;
-        Union(x,enemigo[y]);
-    }
-    else if(enemigo[y] == y){
-        enemigo[y] = x;
-        Union(y,enemigo[x]);
+    aliado[aliadoX] = aliadoY;
+    if(enemigoX == -1){
+        if(enemigoY == -1){
+            return true;
+        }
+        else{
+            enemigo[aliadoX] = enemigoY;
+        }
     }
     else{
-        Union(x,enemigo[y]);
-        Union(y,enemigo[x]);
+        if(enemigoY == -1){
+            enemigo[aliadoY] = enemigoX;
+        }
+        else{
+            if(enemigoX == enemigoY){
+                return true;
+            }
+            else{
+                int aliadoEnemigoX = Find(enemigoX);
+                int aliadoEnemigoY = Find(enemigoY);
+
+                enemigo[aliadoX] = aliadoEnemigoY;
+                enemigo[aliadoY] = aliadoEnemigoY;
+
+                setFriends()
+            }
+        }
     }
+    return true;
+}
+
+bool setEnemies(int x, int y){
 
 }
 
 
 int main()
 {
+    freopen("10158 in.txt","r",stdin);
+    freopen("10158 out.txt","w",stdout);
     int n, c, x, y, i;
     scanf("%d",&n);
-    REP(i,n+1){aliado[i]=i;enemigo[i]=i;}
+    REP(i,n+1){aliado[i]=i;enemigo[i]=-1;}
     while(scanf("%d %d %d", &c, &x, &y)){
         if(c == 0 && x == 0 && y == 0)break;
         switch(c){
             case 1:
-                setFriends(x, y);
+                if(!setFriends(x, y))printf("-1\n");
                 break;
             case 2:
-                setEnemies(x, y);
+                if(!setEnemies(x, y))printf("-1\n");
                 break;
             case 3:
                 printf("%d\n",(areFriends(x, y)?1:0));
