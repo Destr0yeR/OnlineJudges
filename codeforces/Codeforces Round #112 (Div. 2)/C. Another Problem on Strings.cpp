@@ -1,49 +1,37 @@
 #include<bits/stdc++.h>
+#define MAX 1000001
+
+int toNum(char c){return c-'0';}
+
+int a[MAX], b[MAX];
 
 using namespace std;
 
 int main()
 {
-    cin.sync_with_stdio(false);
-    cout.sync_with_stdio(false);
-
-    int k;
+    int k, aux;
+    long long ans = 0;
     string s;
-
+    
     cin >> k;
     cin >> s;
-    vector<int> p;
-
-    int cont = 0;
-    int total;
-    int i, j;
-
-    i = j = 0;
-    total = 0;
-    for( ; i < s.size() && j < s.size(); ){
-        total += s[j] - '0';
-        cout << " i: " << i <<  " total: " << total << " j : " << j << endl;
-        if(total < k){
-            j++;
-        }
-        else if(total == k){
-            cont++;
-            if(j < s.size()-1){
-                j++;
-            }
-            else{
-                total -= (s[i] - '0');
-                i++;
-            }
-        }
-        else{
-            total -= (s[i]-'0');
-            total -= (s[j]-'0');
-            i++;
-        }
-    }
-
-    cout << cont << endl;
+    
+    int sz = s.size();
+    
+    memset(a, 0, sizeof(a));
+    memset(b, 0, sizeof(b));
+    
+    for(int i = 0 ; i < sz ; ++i)a[i+1] = a[i] + (toNum(s[i]));
+    
+    b[0] = 1;
+    
+    for(int i = 0 ; i < sz ; ++i){
+		aux = a[i+1]-k;
+		if(aux>=0)ans+=b[aux];
+		b[a[i+1]]++;
+	}
+    
+	cout << ans << endl;
 
     return 0;
 }
