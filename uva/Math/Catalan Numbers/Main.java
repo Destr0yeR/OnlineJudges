@@ -45,18 +45,24 @@ class Main{
 	void Begin(){
 		String input;
         StringTokenizer idata;
-        int a, b, min, max, num, n, cycle, cyclemax;
+        int a, b, min, max, num, n, cycle, cyclemax, T;
         
         for(int i = 0 ; i < 1001 ; ++i){
 			Ca[i] = new BigInteger("-1");
 		}
 		Ca[0] = new BigInteger("1");
-        
-		while ((input = Main.ReadLn (255)) != null)
+		
+		input = Main.ReadLn (255);
+		idata = new StringTokenizer (input);
+		
+		T = Integer.parseInt (idata.nextToken());
+		
+		for(int tc = 1 ; tc <= T ; ++tc)
         {
+			input = Main.ReadLn (255);
 			idata = new StringTokenizer (input);
 			n = Integer.parseInt (idata.nextToken());
-			System.out.println(catalan(n));
+			System.out.println("Case "+tc+": "+catalan(n/2-1).multiply(BigInteger.valueOf(n-1)));
         }
 	}
 }
