@@ -22,23 +22,23 @@ using namespace std;
 
 typedef complex<double> cd;
 typedef vector<cd> vcd;
-typedef vector<int> vi;
+
 typedef long long ll;
 
-using namespace std; 
-
 const double PI = 4*atan(1);
-const double TPI = 2.0 * PI;
+const double TPI = 2*PI;
 
 void fft(vcd& A, bool invert){
 	int n = sz(A), bit, mid;
+	double angle;
+	
 	cd wlen, w, u, v;
-	long double angle;
 	
 	for(int i = 1, j = 0 ; i < n ; ++i){
 		bit = n >> 1;
 		for( ; j >= bit ; bit >>= 1)j -= bit;
 		j += bit;
+		
 		if(i < j)swap(A[i], A[j]);
 	}
 	
@@ -46,72 +46,61 @@ void fft(vcd& A, bool invert){
 		angle = TPI / len * (invert?-1:1);
 		wlen = cd(cos(angle), sin(angle));
 		mid = len >> 1;
+		
 		for(int i = 0 ; i < n ; i += len){
 			w = cd(1, 0);
 			forn(j, mid){
 				u = A[i + j];
-				v = w * A[i + j + mid];
+				v = w*A[i + j + mid];
 				A[i + j] = u + v;
 				A[i + j + mid] = u - v;
-				w *= wlen; 
+				w *= wlen;
 			}
 		}
 	}
+	
 	if(invert)forn(i, n)A[i] /= n;
 }
 
-vi mult(vi A, vi B){
-	int k = 1, mx = max(sz(A), sz(B));
-	vcd fA(all(A));
-	vcd fB(all(B));
-	
-	while(k < mx) k <<= 1;
-	k <<= 1;
-	
-	vi C(k);
-	fA.resize(k);
-	fB.resize(k);
-	
-	fft(fA, false);
-	fft(fB, false);
-	
-	forn(i, sz(fA))fA[i] *= fB[i];
-	fft(fA, true);
-	
-	if(sz(fA) > (1 << 20))fA.resize(1 << 20);
-	forn(i, sz(fA)){
-		if(int(fA[i].real() + 0.5) > 0)C[i] = 1;
-		else C[i] = 0;
-	}
-	return C;
-}
-
-vi acu[10];
-
 int main(){
-	int n, k, x;
-	sii(n, k);
+	int n, c, k;
 	
-	vi A(1);
-	A[0] = 1;
-	acu[0].resize(1 << 10);
-	forn(i, n){
-		si(x);
-		acu[0][x] = 1;
-	}
-	
-	forr(i, 1, 10)if((i << 1) <= k)acu[i] = mult(acu[i-1], acu[i-1]);
-	forn(i, 10)if((1 << i) & k)A = mult(A, acu[i]);
-
-	int cnt = 0;
-	forn(i, sz(A)){
-		if(A[i] > 0){
-			if(cnt++ > 0)printf(" ");
-			printf("%d", i);
+	TEST(t){
+		vcd A, B;
+		
+		si(n);
+		k = 1;
+		while(k < 2*(n+1))k <<= 1;
+		
+		A.resize(k);
+		B.resize(k);
+		
+		rforn(i, n+1){
+			si(c);
+			A[i] = cd(c, 0);
+		}
+		
+		rforn(i, n+1){
+			si(c);
+			B[i] = cd(c, 0);
+		}
+		
+		fft(A, false);
+		fft(B, false);
+		
+		forn(i, k)A[i] *= B[i];
+		
+		fft(A, true);
+		
+		rforn(i, 2*n + 1){
+			cout << ll(A[i].real() + 0.5);
+			if(i)printf(" ");
+			else puts("");
 		}
 	}
-	
-	puts("");
-	
+
 	return 0;
 }
+
+
+
