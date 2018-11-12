@@ -38,5 +38,11 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
+	int n, k;
+	
+	sii(n, k);
+	
+	int mat[n][k];
+	
 	return 0;
 }

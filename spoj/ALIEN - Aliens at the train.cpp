@@ -36,7 +36,61 @@ typedef vector<cd> vcd;
 
 const double PI = 4*atan(1);
 const double TPI = 2*PI;
+ 
+ /**
+INPUT:
+1
+5 100
+20 15 30 80 100
+* 
+20 100 1 2 3 4 5
+* 
+101 20 1 2 3 4 5
+* 
+OUTPUT
+65 3
+  * */
 
 int main(){
+	
+	TEST(t) {
+		int a, b;
+		sii(a, b);
+		vi v(a);
+		forn(i, a)si(v[i]);
+		
+		int i = 0;
+		int j = 0;
+		
+		int sum = 0, cnt = 0;
+		
+		int elem = 0, ans = 0;
+		
+		while(j < a){
+			if(sum + v[j] <= b) {
+				sum += v[j];
+				cnt++;
+				j++;
+				if(cnt > elem){
+					elem = cnt;
+					ans = sum;
+				}
+				else if(cnt == elem){
+					ans = min(ans, sum);
+				}
+			}
+			else {
+				if(i == j)j++;
+				else {
+					cnt--;
+					sum -= v[i];
+				}
+				i++;
+			}
+		}
+		
+		cout << ans << " " << elem << "\n";
+	}
+	
 	return 0;
 }

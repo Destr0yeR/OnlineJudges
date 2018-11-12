@@ -38,5 +38,36 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
+	int q;
+	si(q);
+	
+	while(q--) {
+		int n, res;
+		si(n);
+		int mod = n % 4;
+		
+		switch(mod) {
+			case 0:
+				if(n < 4)puts("-1");
+				else printf("%d\n", n/4);
+				break;
+			case 1:
+				res = n - 9;
+				if(res < 0)puts("-1");
+				else printf("%d\n", res/4 + 1);
+				break;
+			case 2:
+				res = n - 6;
+				if(res < 0)puts("-1");
+				else printf("%d\n", res/4 + 1);
+				break;
+			case 3:
+				res = n - 15;
+				if(res < 0)puts("-1");
+				else printf("%d\n", res/4 + 2);
+				break;
+		}
+	}
+	
 	return 0;
 }

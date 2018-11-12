@@ -33,10 +33,33 @@ typedef complex<long double> cd;
 
 typedef vector<int> vi;
 typedef vector<cd> vcd;
+typedef pair<int, int> pii;
+typedef vector< pair<int, int> >  vpii;
 
 const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
+struct node {
+	int x, y, i;
+	node(){}
+	node(int x, int y, int i):x(x), y(y), i(i){}
+	
+	bool operator<(const node& b) const {return x < b.x;}
+};
+
 int main(){
+	
+	freopen("10131.in", "r", stdin);
+	vector<node> v;
+	int x, y, i = 1;
+	
+	while(sii(x, y) != EOF){
+		v.push_back(node(x, y, i++));
+	}
+	
+	sort( all(v) );
+	
+	forn(i, sz(v))cout << v[i].x << " " << v[i].y << " " << v[i].i << endl;
+	
 	return 0;
 }
