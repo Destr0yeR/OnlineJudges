@@ -38,43 +38,30 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
+	map<int, int> mp;
 	
-	cin >> s1 >> s2;
+	int fThree = 0, fTwo = 0, sum = 0, x;
+	bool isTwo = false;
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	forn(i, 5) {
+		si(x);
+		mp[x]++;
+		sum += x;
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	for(map<int, int>::reverse_iterator it = mp.rbegin() ; it != mp.rend() ; ++it) {
+		if(it->second >= 3) {
+			fThree = 3*it->first;
+		}
+		if(it->second == 2 && !isTwo) {
+			isTwo = true;
+			fTwo = 2 * it->first;
+		}
+	}
+	
+	//cout << fThree << " " << fTwo << endl;
+	
+	printf("%d\n", min(sum - fThree, sum - fTwo));
 	
 	return 0;
 }

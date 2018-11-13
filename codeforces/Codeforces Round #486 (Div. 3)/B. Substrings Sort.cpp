@@ -37,44 +37,33 @@ typedef vector<cd> vcd;
 const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
+bool cmp(string a, string b) {
+	return a.size() < b.size();
+}
+
 int main(){
-	string s1, s2;
+	int n; si(n);
+	vector<string> s;
+	s.resize(n);
 	
-	cin >> s1 >> s2;
+	forn(i, n)cin >> s[i];
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	sort(all(s), cmp);
+	
+	bool found = true;
+	
+	forn(i, n-1) {
+		if(s[i+1].find(s[i]) == string::npos) {
+			found = false;
+			break;
+		}
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	if(found) {
+		puts("YES");
+		forn(i, n)cout << s[i] << endl;
+	}
+	else puts("NO");
 	
 	return 0;
 }

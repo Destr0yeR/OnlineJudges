@@ -38,43 +38,32 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
+	int n, m; sii(n, m);
 	
-	cin >> s1 >> s2;
+	vi a, b;
+	a.resize(n);
+	b.resize(m);
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	forn(i, n)si(a[i]);
+	forn(i, m)si(b[i]);
+	
+	int i = -1, j = -1;
+	int sA = 0, sB = 0;
+	
+	int ans = -1;
+	
+	while(i < n && j < m) {
+		if(sA == sB) {
+			ans++; i++; j++;
+
+			if(i < n) sA = a[i];
+			if(j < m) sB = b[j];
+		}
+		else if(sA < sB) sA += a[++i];
+		else if(sA > sB) sB += b[++j];
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	cout << ans << endl;
 	
 	return 0;
 }

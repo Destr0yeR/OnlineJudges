@@ -21,7 +21,7 @@
 #ifdef ONLINE_JUDGE
 	#define sll(x) scanf("%I64d", &x)
 #else
-	#define sll(x) cin >> x
+    #define sll(x) cin >> x
 #endif
 
 using namespace std;
@@ -38,43 +38,32 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
+	vi a;
+	a.resize(6);
+	int sum = 0;
 	
-	cin >> s1 >> s2;
+	forn(i, 6) {
+		si(a[i]);
+		sum += a[i];
+	}
+	bool found = false;
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	if(sum%2 == 0) {
+		sum /= 2;
+		
+		forn(i, 6) {
+			forr(j, i+1, 6) {
+				forr(k, j+1, 6) {
+					if(a[i] + a[j] + a[k] == sum) {
+						found = true;
+					}
+				}
+			}
+		}
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	if(found)puts("YES");
+	else puts("NO");
 	
 	return 0;
 }

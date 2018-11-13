@@ -38,43 +38,43 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
-	
-	cin >> s1 >> s2;
-	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	int n;
+	si(n);
+	vi a;
+	if(n == 1 || n == 2) {
+		puts("1");
+		puts("1");
+		return 0;
+	}
+	if(n == 3) {
+		puts("2");
+		puts("1 3");
+		return 0;
+	}
+	if(n == 4) {
+		puts("4");
+		puts("3 1 4 2");
+		return 0;
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	a.resize(n);
+	bool taken = false;
+	
+	int j = 0;
+	
+	forn(i, n) {
+		a[j] = i;
+		j+=2;
+		if(j >= n && !taken) {
+			j = 1;
+			taken = true;
+		}
+	}
+	printf("%d\n", n);
+	forn(i, n) {
+		if(i)printf(" ");
+		printf("%d", a[i] + 1);
+	}
 	
 	return 0;
 }

@@ -33,48 +33,47 @@ typedef complex<long double> cd;
 
 typedef vector<int> vi;
 typedef vector<cd> vcd;
+typedef vector<int>::iterator vit;
 
 const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
+	ll n;  cin >> n;
 	
-	cin >> s1 >> s2;
+	vector<ll> power, a;
+	power.resize(32);
+	a.resize(n);
+	power[0] = 1;
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	forr(i, 1, 32) {
+		power[i] = power[i - 1] * 2;
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	map<ll, ll> mp;
+	forn(i, n) {
+		cin >> a[i];
+		mp[a[i]]++;
+	}
+	
+	ll ans = 0;
+	
+	forn(i, n) {
+		forn(j, 32) {
+			ll check = power[j] - a[i];
+			
+			if(mp[check] > 0 ){
+				if(check == a[i]) {
+					ans += mp[check] - 1;
+				}
+				else {
+					ans += mp[check];
+				}
+			}
+		}
+	}
+	
+	cout << ans/2 << endl;
 	
 	return 0;
 }

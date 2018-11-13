@@ -38,43 +38,40 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
+	int n; si(n);
 	
-	cin >> s1 >> s2;
+	map<string, ll> mp, mp2;
+	vector <pair<string, ll > >history;
+	history.resize(n);
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	ll maxi = -10000000;
+	string ans;
+	
+	forn(i, n) {
+		cin >> history[i].first >> history[i].second;
+		mp[history[i].first] += history[i].second;
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	for(map<string, ll>::iterator it = mp.begin() ; it != mp.end() ; ++it) {
+		maxi = max(maxi, it->second);
+	}
+	
+	set<string> maxim;
+	
+	for(map<string, ll>::iterator it = mp.begin() ; it != mp.end() ; ++it) {
+		if(it->second == maxi) {
+			maxim.insert(it->first);
+		}
+	}
+	
+	forn(i, n) {
+		mp2[history[i].first] += history[i].second;
+		
+		if(mp2[history[i].first] >= maxi && maxim.find(history[i].first) != maxim.end()) {
+			cout << history[i].first << endl;
+			break;
+		}
+	}
 	
 	return 0;
 }

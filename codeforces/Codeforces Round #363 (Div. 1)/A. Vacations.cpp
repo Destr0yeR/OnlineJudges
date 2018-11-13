@@ -38,43 +38,34 @@ const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
 int main(){
-	string s1, s2;
+	int n;
+	vi a, res;
 	
-	cin >> s1 >> s2;
+	si(n);
+	a.resize(n);
+	res.resize(n);
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	forn(i, n)si(a[i]);
+	
+	int dp[n+1][3];
+	
+	dp[0][0] = 0;
+	dp[0][1] = (a[0] == 1 || a[0] == 3) ? 1 : 0;
+	dp[0][2] = (a[0] == 2 || a[0] == 3) ? 1 : 0;
+	
+	forr(i, 1, n) {
+		dp[i][0] = max(dp[i-1][0], max(dp[i-1][1], dp[i-1][2]));
+		dp[i][1] = max(dp[i-1][0], dp[i-1][2]) + ((a[i] == 1 || a[i] == 3) ? 1 : 0);
+		dp[i][2] = max(dp[i-1][0], dp[i-1][1]) + ((a[i] == 2 || a[i] == 3) ? 1 : 0);
 	}
+	/*
+	forn(i, n) {
+		cout << i << " -> " << dp[i][0] << " - " << dp[i][1] << " - " << dp[i][2] << endl;
+	}*/
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	int maxi = max(dp[n-1][0], max(dp[n-1][1], dp[n-1][2]));
+	
+	printf("%d\n", n - maxi);
 	
 	return 0;
 }

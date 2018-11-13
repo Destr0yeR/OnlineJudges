@@ -37,44 +37,41 @@ typedef vector<cd> vcd;
 const double PI = 4*atan(1);
 const double TPI = 2*PI;
 
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
+
 int main(){
-	string s1, s2;
 	
-	cin >> s1 >> s2;
+	int n; si(n);
+	int l, r; sii(l, r);
+	int x; si(x);
 	
-	int n = s1.size();
-    
-    int current = 0 ;
-    
-    forn(i, n) {
-        current += (s1[i]=='+' ? 1 : -1) ;
+	vi a;
+	a.resize(n);
+	
+	forn(i, n)si(a[i]);
+	
+	int ans = 0;
+	for(int i = 1 ; i < (2<< (n-1) ) ; ++i) {
+		int sum = 0;
+		int mini = 1000007;
+		int maxi = 0;
+		
+		forn(j, n) {
+			if(CHECK_BIT(i, j)) {
+				sum += a[j];
+				mini = min(mini, a[j]);
+				maxi = max(maxi, a[j]);
+			}
+		}
+		
+		if(sum >= l && sum <= r && maxi - mini >= x) {
+			ans++;
+		}
 	}
 	
-    int target = 0 ;
-    int moves = 0 ;
-    
-    forn(i, n) {
-        if(s2[i]=='?') moves++ ;
-        else target += (s2[i] == '+'? 1 : -1) ;
-    }
-
-    int distance = current - target;
-    double answer ;
-    
-    if((distance+moves)%2!=0 || moves<abs(distance)) answer = 0 ;
-    else {
-        int m = (moves+abs(distance))/2;
-        int c = 1;
-        
-        forn(i, m)c *= moves-i ;
-        forr(i, 2, m+1)c /= i ;
-        
-        answer = (double)c/(1<<moves) ;
-    }
-
-    printf("%.12f\n", answer) ;
-
-    return 0 ;
+	
+	
+	printf("%d\n", ans);
 	
 	return 0;
 }
